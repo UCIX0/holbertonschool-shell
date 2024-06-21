@@ -1,3 +1,19 @@
 #!/usr/bin/env bash
-# Usar awk para procesar el archivo de registro de Apache, contar y ordenar los resultados
-awk '{count[$1, $9]++} END {for (combo in count) {split(combo, arr, SUBSEP); print count[combo], arr[1], arr[2]}}' apache-access.log | sort -nr
+# Usar awk para procesar el archivo de registro de Apache
+awk '{
+    ip_status[$1 " " $9]++
+}
+END {
+    for (i in ip_status) {
+        print ip_status[i], i
+    }
+}' apache-access.log | awk '
+{
+    count[NR] = $0
+}
+END {
+    n = asorti(count, sorted)
+    for (i = n; i >= 1; i--) {
+        print count[sorted[i]]
+    }
+}'
