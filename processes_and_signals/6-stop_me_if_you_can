@@ -2,11 +2,5 @@
 # Este script detiene el proceso 4-to_infinity_and_beyond sin usar kill o killall
 # shellcheck disable=SC2009
 
-# Encontrar el PID del proceso que ejecuta 4-to_infinity_and_beyond
-pid=$(pgrep -f "bash ./4-to_infinity_and_beyond")
-
-# Enviar la señal de terminación al proceso utilizando el sistema de archivos /proc
-if [ -n "$pid" ]; then
-    echo "Terminating process with PID $pid"
-    echo -n "15" > /proc/"$pid"/task/"$pid"/status
-fi
+# Utiliza pkill para encontrar y terminar el proceso
+pkill -f "bash ./4-to_infinity_and_beyond"
