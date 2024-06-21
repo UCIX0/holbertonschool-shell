@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Script to terminate the 4-to_infinity_and_beyond process without using kill or killall
 pgrep 4-to_infinity_and_beyond | while read -r pid; do
-    echo "Terminating process $pid"
     exec 3>/proc/$pid/fd/0
     echo > /proc/$pid/fd/1
 done
