@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
-# This script kills a process using command kill
-kill "$(ps -x | pgrep -f beyond)"
+# Este script detiene el proceso 4-to_infinity_and_beyond
+
+# Obtener el PID del proceso 4-to_infinity_and_beyond
+pid=$(pgrep -f "bash ./4-to_infinity_and_beyond")
+
+# Enviar la señal TERM para detener el proceso
+kill "$pid"
