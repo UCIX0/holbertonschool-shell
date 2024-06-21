@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-#script displays contenido
-while read -r line
-do
-	echo "$line"
-done </etc/passwd
+# Abrir el archivo /etc/passwd y leerlo línea por línea
+while IFS=: read -r username _ user_id _ _ home_directory _; do
+	echo "$username:$user_id:$home_directory"
+done < /etc/passwd
