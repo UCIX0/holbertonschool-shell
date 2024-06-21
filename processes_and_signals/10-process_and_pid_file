@@ -5,7 +5,7 @@
 pidfile="/var/run/myscript.pid"
 
 # Create PID file
-echo $$ > "$pidfile"
+sudo bash -c "echo $! > $pidfile"
 
 # Signal handlers
 handle_sigterm() {
