@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Este script muestra "To infinity and beyond" indefinidamente con una pausa de 2 segundos entre cada iteración
+
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done
