@@ -1,0 +1,2 @@
+#!/bin/bash
+awk '{count[$1, $9]++} END {for (combo in count) {split(combo, arr, SUBSEP); print count[combo], arr[1], arr[2]}}' apache-access.log | sort -nr
