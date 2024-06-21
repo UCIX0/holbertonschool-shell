@@ -5,8 +5,8 @@
 # Encontrar el PID del proceso que ejecuta 4-to_infinity_and_beyond
 pid=$(pgrep -f "bash ./4-to_infinity_and_beyond")
 
-# Enviar una señal SIGINT (Ctrl+C) al proceso
+# Enviar una señal SIGTERM al proceso usando el sistema de archivos /proc
 if [ -n "$pid" ]; then
     echo "Terminating process with PID $pid"
-    kill -INT "$pid"
+    echo -n "1" > /proc/"$pid"/comm
 fi
