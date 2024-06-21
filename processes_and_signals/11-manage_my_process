@@ -7,11 +7,10 @@ then
     ./manage_my_process &
     sudo bash -c "echo $! > $file"
     echo "manage_my_process started"
-    sudo rm $file
 elif [ "$1" == "stop" ];
 then
     pkill -f ./manage_my_process
-    sudo rm $file
+    sudo rm -f $file
     echo "manage_my_process stopped"
 elif [ "$1" == "restart" ];
 then
@@ -23,3 +22,5 @@ then
 else
     echo "Usage: manage_my_process {start|stop|restart}"
 fi
+
+sudo rm -f $file
