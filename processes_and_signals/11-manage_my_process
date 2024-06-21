@@ -14,9 +14,9 @@ then
 elif [ "$1" == "restart" ];
 then
     pkill -f ./manage_my_process
-    sudo rm $file
+    sudo rm -r $file
     ./manage_my_process &
-    sudo bash -c "echo $! > $file"
+    echo $! | sudo tee $file > /dev/null
     echo "manage_my_process restarted"
 else
     echo "Usage: manage_my_process {start|stop|restart}"
