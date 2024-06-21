@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # Este script detiene el proceso 4-to_infinity_and_beyond sin usar kill o killall
 
-# Obtener el PID del proceso que ejecuta 4-to_infinity_and_beyond
+# Encontrar el PID del proceso que ejecuta 4-to_infinity_and_beyond
 pid=$(pgrep -f "bash ./4-to_infinity_and_beyond")
 
-# Enviar una señal SIGINT al proceso escribiendo en /proc/$pid/comm
+# Enviar una señal SIGTERM al proceso escribiendo en /proc/$pid/status
 if [[ -n "$pid" ]]; then
-	# Simula una interrupción (Ctrl+C) enviando SIGINT usando pkill
-	pkill -SIGINT -f "bash ./4-to_infinity_and_beyond"
+  echo "SIGTERM" > /proc/"$pid"/status
 fi
