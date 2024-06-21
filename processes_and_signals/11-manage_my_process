@@ -17,10 +17,13 @@ case "$1" in
     stop)
         if [ -f "$PIDFILE" ]; then
             PID=$(cat "$PIDFILE")
-            if [ -n "$PID" ]; then
+            if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
                 kill "$PID"
                 rm -f "$PIDFILE"
                 echo "manage_my_process stopped"
+            else
+                echo "manage_my_process not running"
+                rm -f "$PIDFILE"
             fi
         else
             echo "manage_my_process not running"
@@ -29,7 +32,7 @@ case "$1" in
     restart)
         if [ -f "$PIDFILE" ]; then
             PID=$(cat "$PIDFILE")
-            if [ -n "$PID" ]; then
+            if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
                 kill "$PID"
                 rm -f "$PIDFILE"
             fi
