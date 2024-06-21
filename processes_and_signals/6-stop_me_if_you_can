@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
-# Este script detiene el proceso 4-to_infinity_and_beyond sin usar kill o killall
-# shellcheck disable=SC2009
-
-# Encontrar el PID del proceso que ejecuta 4-to_infinity_and_beyond
-pid=$(pgrep -f "bash ./4-to_infinity_and_beyond")
-
-# Enviar una señal SIGTERM al proceso usando el sistema de archivos /proc
+# Script Name: 6-stop_me_if_you_can
+# Description: Stops the 4-to_infinity_and_beyond process without using kill or killall
+pid=$(pgrep -fo "4-to_infinity_and_beyond")
 if [ -n "$pid" ]; then
-    echo "Terminating process with PID $pid"
-    echo -n "1" > /proc/"$pid"/comm
-fi
+    echo "Stopping process: $pid"
