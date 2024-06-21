@@ -1,38 +1,36 @@
 #!/usr/bin/env bash
-# This script creates a PID file, displays "To infinity and beyond" indefinitely,
-# responds to signals SIGTERM and SIGQUIT by deleting the PID file and terminating,
-# responds to signals SIGINT by displaying "Y U no love me?!", and
-# responds to signals SIGTERM by displaying "I hate the kill command".
+#Write a Bash script that displays To infinity and beyond with sleep 2
+#!/bin/bash
 
-# Function to handle SIGTERM and SIGQUIT signals
-function terminate_handler() {
+pidfile="/var/run/myscript.pid"
+
+# Create PID file
+echo $$ > "$pidfile"
+
+# Signal handlers
+handle_sigterm() {
     echo "I hate the kill command"
-    cleanup
-    exit 0
+    cleanup_and_exit
 }
 
-# Function to handle SIGINT signal
-function interrupt_handler() {
+handle_sigint() {
     echo "Y U no love me?!"
 }
-
-# Function to handle cleanup
-function cleanup() {
-    echo "Cleaning up..."
-    rm -f /var/run/myscript.pid
+handle_sigquit() {
+    echo "Y U no love me?!"
+    cleanup_and_exit
 }
+cleanup_and_exit() {
+    rm "$pidfile"
+    exit
+}
+# Set signal handlers
+trap handle_sigterm SIGTERM
+trap handle_sigint SIGINT
+trap handle_sigquit SIGQUIT
 
-# Trap SIGTERM and SIGQUIT signals and call the handler function
-trap terminate_handler SIGTERM SIGQUIT
-
-# Trap SIGINT signal and call the handler function
-trap interrupt_handler SIGINT
-
-# Create the PID file
-echo $$ > /var/run/myscript.pid
-
-# Loop indefinitely
+# Main loop
 while true; do
     echo "To infinity and beyond"
-    sleep 1
+    sleep 2
 done
