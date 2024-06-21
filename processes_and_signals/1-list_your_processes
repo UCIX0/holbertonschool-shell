@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Este script muestra una lista de los procesos actualmente en ejecución
 
-ps -e -o user,pid,pcpu,pmem,vsz,rss,tty,stat,start,time,command --forest
+ps aux --forest
