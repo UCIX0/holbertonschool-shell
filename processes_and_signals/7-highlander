@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#ZScript that displays to infinity and beyond with sleep 2 after each iteration and I am invincible!!! appearing in terminal #0.
+trap "echo 'I am invincible!!!'" SIGTERM
+while true; do
+
+echo "To infinity and beyond"
+sleep 2
+done
