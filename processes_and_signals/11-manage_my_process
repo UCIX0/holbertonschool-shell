@@ -1,43 +1,35 @@
 #!/usr/bin/env bash
 # 11-manage_my_process
-PIDFILE=/var/run/my_process.pid
-PROG=./manage_my_process  # Asume que manage_my_process está en el mismo directorio
+
+PID_FILE="/var/run/my_process.pid"
+LOG_FILE="/tmp/my_process"
 
 case "$1" in
     start)
-        if [ -f "$PIDFILE" ]; then
-            echo "manage_my_process already running"
-            exit 1
+        if [ -f "$PID_FILE" ]; then
+            echo "Process already running with PID $(cat $PID_FILE)"
+        else
+            ./manage_my_process &
+            echo $! > "$PID_FILE"
+            echo "manage_my_process started"
         fi
-        $PROG &
-        echo $! > "$PIDFILE"
-        echo "manage_my_process started"
         ;;
     stop)
-        if [ -f "$PIDFILE" ]; then
-            PID=$(cat "$PIDFILE")
-            if kill -0 "$PID" 2>/dev/null; then
-                kill "$PID"
-                rm -f "$PIDFILE"
-                echo "manage_my_process stopped"
-            else
-                echo "manage_my_process not running"
-                rm -f "$PIDFILE"
-            fi
+        if [ -f "$PID_FILE" ]; then
+            kill "$(cat $PID_FILE)"
+            rm "$PID_FILE"
+            echo "manage_my_process stopped"
         else
-            echo "manage_my_process not running"
+            echo "Process not running"
         fi
         ;;
     restart)
-        if [ -f "$PIDFILE" ]; then
-            PID=$(cat "$PIDFILE")
-            if kill -0 "$PID" 2>/dev/null; then
-                kill "$PID"
-            fi
-            rm -f "$PIDFILE"
+        if [ -f "$PID_FILE" ]; then
+            kill "$(cat $PID_FILE)"
+            rm "$PID_FILE"
         fi
-        $PROG &
-        echo $! > "$PIDFILE"
+        ./manage_my_process &
+        echo $! > "$PID_FILE"
         echo "manage_my_process restarted"
         ;;
     *)
