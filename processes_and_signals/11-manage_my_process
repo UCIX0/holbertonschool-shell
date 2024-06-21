@@ -1,27 +1,49 @@
 #!/usr/bin/env bash
 # 11-manage_my_process
+PIDFILE=/var/run/my_process.pid
+PROG=./manage_my_process  # Asume que manage_my_process está en el mismo directorio
 
 case "$1" in
     start)
-        ./manage_my_process &
-        echo $! > /var/run/my_process.pid
+        if [ -f "$PIDFILE" ]; then
+            echo "manage_my_process already running"
+            exit 1
+        fi
+        $PROG &
+        echo $! > "$PIDFILE"
         echo "manage_my_process started"
         ;;
     stop)
-        kill "$(cat /var/run/my_process.pid)"
-        rm /var/run/my_process.pid
-        echo "manage_my_process stopped"
+        if [ -f "$PIDFILE" ]; then
+            PID=$(cat "$PIDFILE")
+            if kill -0 "$PID" 2>/dev/null; then
+                kill "$PID"
+                rm -f "$PIDFILE"
+                echo "manage_my_process stopped"
+            else
+                echo "manage_my_process not running"
+                rm -f "$PIDFILE"
+            fi
+        else
+            echo "manage_my_process not running"
+        fi
         ;;
     restart)
-        kill "$(cat /var/run/my_process.pid)"
-        rm /var/run/my_process.pid
-        ./manage_my_process &
-        echo $! > /var/run/my_process.pid
+        if [ -f "$PIDFILE" ]; then
+            PID=$(cat "$PIDFILE")
+            if kill -0 "$PID" 2>/dev/null; then
+                kill "$PID"
+            fi
+            rm -f "$PIDFILE"
+        fi
+        $PROG &
+        echo $! > "$PIDFILE"
         echo "manage_my_process restarted"
         ;;
     *)
         echo "Usage: manage_my_process {start|stop|restart}"
         exit 1
+        ;;
 esac
 
 exit 0
